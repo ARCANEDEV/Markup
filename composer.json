@@ -1,0 +1,33 @@
+{
+  "name": "arcanedev/markup",
+  "description": "PHP HTML Markup generator",
+  "keywords": ["generator", "html", "php", "tags", "markup", "meta"],
+  "homepage": "https://github.com/ARCANEDEV/Markup",
+  "type": "package",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ARCANEDEV",
+      "email": "arcanedev.maroc@gmail.com"
+    }
+  ],
+  "require": {
+    "php" : ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.4",
+    "phpunit/phpcov": "~2.0",
+    "satooshi/php-coveralls": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Arcanedev\\Markup\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Arcanedev\\Markup\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
+}
