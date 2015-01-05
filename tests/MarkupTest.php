@@ -21,7 +21,7 @@ class MarkupTest extends TestCase
     {
         parent::setUp();
 
-        $this->markup = new Markup;
+        $this->markup = Markup::make();
     }
 
     public function tearDown()
