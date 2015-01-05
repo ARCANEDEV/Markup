@@ -1,4 +1,4 @@
-# PHP HTML MARKUP GENERATOR
+PHP HTML MARKUP GENERATOR
 ==============
 [![Travis Status](http://img.shields.io/travis/ARCANEDEV/Markup.svg?style=flat-square)](https://travis-ci.org/ARCANEDEV/Markup)
 [![Github Release](http://img.shields.io/github/release/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/releases)
