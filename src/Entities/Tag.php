@@ -1,8 +1,10 @@
 <?php namespace Arcanedev\Markup\Entities;
 
 use Arcanedev\Markup\Builder;
+use Arcanedev\Markup\Contracts\Entities\TagInterface;
+use Arcanedev\Markup\Exceptions\InvalidTypeException;
 
-class Tag
+class Tag implements TagInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -15,7 +17,7 @@ class Tag
     protected $attributes;
 
     /** @var string */
-    protected $text       = '';
+    protected $text;
 
     /** @var Tag */
     private $top;
@@ -23,7 +25,7 @@ class Tag
     /** @var Tag */
     private $parent;
 
-    private $builder;
+    /** @var array */
     private $elements;
 
     /* ------------------------------------------------------------------------------------------------
@@ -31,19 +33,29 @@ class Tag
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * @param string $type
-     * @param array  $attributes
-     * @param mixed  $parent
+     * Tag Constructor
+     *
+     * @param string   $type
+     * @param array    $attributes
+     * @param Tag|null $parent
      */
     public function __construct($type, array $attributes = [], $parent = null)
     {
+        $this->init();
         $this->setType($type);
-
-        $this->attributes = new AttributeCollection;
-        $this->attrs($attributes);
+        $this->setAttributes($attributes);
         $this->setParent($parent);
+    }
 
-        $this->elements = [];
+    /**
+     * Init Tag Object
+     */
+    private function init()
+    {
+        $this->parent     = null;
+        $this->attributes = new AttributeCollection;
+        $this->elements   = [];
+        $this->text       = '';
     }
 
     /**
@@ -75,6 +87,8 @@ class Tag
     }
 
     /**
+     * Set Type
+     *
      * @param mixed $type
      *
      * @return Tag
@@ -95,11 +109,23 @@ class Tag
      *
      * @return Tag
      */
-    public function attrs(array $attributes)
+    public function setAttributes(array $attributes)
     {
         $this->attributes->addMany($attributes);
 
         return $this;
+    }
+
+    /**
+     * Set many attributes (Alias)
+     *
+     * @param array $attributes
+     *
+     * @return Tag
+     */
+    public function attrs(array $attributes)
+    {
+        return $this->setAttributes($attributes);
     }
 
     /**
@@ -151,6 +177,16 @@ class Tag
     }
 
     /**
+     * Get parent Tag
+     *
+     * @return Tag
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
      * Set Parent
      *
      * @param Tag $parent
@@ -159,9 +195,21 @@ class Tag
      */
     private function setParent(&$parent)
     {
-        $this->parent = $parent;
+        if (! is_null($parent)) {
+            $this->parent = $parent;
+        }
 
         return $this;
+    }
+
+    /**
+     * Get Text
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
@@ -169,7 +217,7 @@ class Tag
      *
      * @return Tag
      */
-    private function setText($text)
+    public function setText($text)
     {
         $this->text = $text;
 
@@ -180,12 +228,22 @@ class Tag
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Render Tag and its elements
+     *
+     * @return string
+     */
     public function render()
     {
         return Builder::make($this);
     }
 
-    public function contentToString()
+    /**
+     * Render tag elements
+     *
+     * @return string
+     */
+    public function renderElements()
     {
         if (count($this->elements) == 0) {
             return '';
@@ -224,11 +282,6 @@ class Tag
         return $htmlTag;
     }
 
-    public function getText()
-    {
-        return $this->text;
-    }
-
     /**
      * Define text content
      *
@@ -247,6 +300,11 @@ class Tag
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if tag is a text object
+     *
+     * @return bool
+     */
     public function isTextType()
     {
         $type = $this->getType();
@@ -255,8 +313,22 @@ class Tag
         return empty($type) and ! empty($text);
     }
 
-    private function checkType($type)
+    /**
+     * Check Type
+     *
+     * @param string $type
+     *
+     * @throws InvalidTypeException
+     */
+    private function checkType(&$type)
     {
+        if (! is_string($type)) {
+            throw new InvalidTypeException(
+                'The type tag must be a string, '.gettype($type) . ' is given.'
+            );
+        }
+
+        $type = strtolower(trim($type));
     }
 
     /**
@@ -278,6 +350,7 @@ class Tag
      */
     private function isTagObject($tag)
     {
-        return is_object($tag) and get_class($tag) === get_class($this);
+        return is_object($tag) and
+               get_class($tag) === get_class($this);
     }
 }

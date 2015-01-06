@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\Markup;
 
-use Arcanedev\Markup\Entities\Tag;
+use Arcanedev\Markup\Contracts\BuilderInterface;
+use Arcanedev\Markup\Contracts\Entities\TagInterface;
 
-class Builder
+class Builder implements BuilderInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -17,7 +18,14 @@ class Builder
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public static function make(Tag $tag)
+    /**
+     * Render a Tag and its elements
+     *
+     * @param TagInterface $tag
+     *
+     * @return string
+     */
+    public static function make(TagInterface $tag)
     {
         if ($tag->isTextType()) {
             return $tag->getText();
@@ -25,10 +33,18 @@ class Builder
 
         return self::isAutoClosed($tag->getType())
             ? self::open($tag, true)
-            : self::open($tag) . $tag->getText() . $tag->contentToString() . self::close($tag);
+            : self::open($tag) . $tag->getText() . $tag->renderElements() . self::close($tag);
     }
 
-    private static function open(Tag $tag, $autoClosed = false)
+    /**
+     * Render open Tag
+     *
+     * @param TagInterface $tag
+     * @param bool         $autoClosed
+     *
+     * @return string
+     */
+    private static function open(TagInterface $tag, $autoClosed = false)
     {
         $output =  '<' . $tag->getType();
 
@@ -41,7 +57,14 @@ class Builder
         return $output;
     }
 
-    private static function close(Tag $tag)
+    /**
+     * Render close tag
+     *
+     * @param TagInterface $tag
+     *
+     * @return string
+     */
+    private static function close(TagInterface $tag)
     {
         return '</' . $tag->getType() . '>';
     }
