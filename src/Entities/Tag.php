@@ -224,6 +224,11 @@ class Tag implements TagInterface
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->render();
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -294,6 +299,104 @@ class Tag implements TagInterface
         $this->addElement('')->setText($value);
 
         return $this;
+    }
+    /**
+     * Return first child of parent of current object
+     */
+    public function getFirst()
+    {
+        return ! is_null($this->parent)
+            ? $this->parent->elements[0]
+            : null;
+    }
+
+    /**
+     * Return last child of parent of current object
+     *
+     * @return Tag
+     */
+    public function getPrevious()
+    {
+        $prev = null;
+
+        if (! is_null($this->parent)) {
+            $find = false;
+
+            foreach ($this->parent->elements as $elt) {
+                if ($elt == $this) {
+                    $find = true;
+                    break;
+                }
+
+                if (! $find) {
+                    $prev = $elt;
+                }
+            }
+        }
+
+        return $prev;
+    }
+
+    /**
+     * Get last child of parent of current object
+     *
+     * @return Tag
+     */
+    public function getNext()
+    {
+        $next = null;
+        $find = false;
+
+        if (! is_null($this->parent)) {
+            foreach ($this->parent->elements as $elt) {
+                if ($find) {
+                    $next = &$elt;
+                    break;
+                }
+
+                if ($elt == $this) {
+                    $find = true;
+                }
+            }
+        }
+
+        return $next;
+    }
+
+    /**
+     * Get last child of parent of current object
+     *
+     * @return Tag
+     */
+    public function getLast()
+    {
+        return ! is_null($this->parent)
+            ? $this->parent->elements[count($this->parent->elements) - 1]
+            : null;
+    }
+
+    /**
+     * Return parent or null
+     *
+     * @return Markup
+     */
+    public function remove()
+    {
+        $parent = $this->parent;
+
+        if (is_null($parent)) {
+            return null;
+        }
+
+        foreach ($parent->elements as $key => $value) {
+            if ($parent->elements[$key] == $this) {
+                unset($parent->elements[$key]);
+
+                return $parent;
+            }
+        }
+
+        return null;
     }
 
     /* ------------------------------------------------------------------------------------------------

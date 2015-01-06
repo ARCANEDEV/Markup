@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Markup\Tests;
 
 use Arcanedev\Markup\Builder;
+use Arcanedev\Markup\Entities\Tag;
 
 class BuilderTest extends TestCase
 {
@@ -41,5 +42,33 @@ class BuilderTest extends TestCase
     public function testCanBeInstantiate()
     {
         $this->assertInstanceOf(self::BUILDER_CLASS, $this->builder);
+    }
+
+    /**
+     * @test
+     */
+    public function testCanMake()
+    {
+        $text    = 'Lorem Ipsum';
+        $textTag = Tag::make('')->setText($text);
+
+        $this->assertEquals($text, Builder::make($textTag));
+
+        $tag = Tag::make('a', [
+            'href'  => '#',
+            'class' => 'btn btn-sm btn-danger'
+        ]);
+
+        $this->assertEquals(
+            '<a href="#" class="btn btn-sm btn-danger"></a>',
+            Builder::make($tag)
+        );
+
+        $tag->addElement($textTag);
+
+        $this->assertEquals(
+            '<a href="#" class="btn btn-sm btn-danger">' . $text . '</a>',
+            Builder::make($tag)
+        );
     }
 }
