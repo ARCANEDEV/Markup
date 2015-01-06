@@ -36,6 +36,28 @@ class MarkupTest extends TestCase
         $this->assertEquals($output, (string) $tag);
     }
 
+    /**
+     * @test
+     */
+    public function testCanMakeTitle()
+    {
+        $title = 'Hello World';
+        $tag    = Markup::title($title);
+        $output = "<title>$title</title>";
+
+        $this->assertEquals($output, $tag->render());
+        $this->assertEquals($output, (string) $tag);
+
+        $tag    = Markup::title()->setText($title);
+        $output = "<title>$title</title>";
+
+        $this->assertEquals($output, $tag->render());
+        $this->assertEquals($output, (string) $tag);
+    }
+
+    /**
+     * @test
+     */
     public function testCanMakeImageTag()
     {
         $img = Markup::img('assets/img/logo.png', 'Logo', ['class' => 'img-responsive']);

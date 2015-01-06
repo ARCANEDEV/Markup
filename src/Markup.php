@@ -40,6 +40,18 @@ class Markup implements MarkupInterface
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Create TITLE
+     *
+     * @param string $text
+     *
+     * @return Tag
+     */
+    public static function title($text = '')
+    {
+        return self::tag('title')->setText($text);
+    }
+
+    /**
      * Create IMG Tag
      *
      * @param string $src
