@@ -1,7 +1,9 @@
-<?php namespace Arcanedev\Markup\Tests;
+<?php namespace Arcanedev\Markup\Tests\Support;
 
-use Arcanedev\Markup\Builder;
+use Arcanedev\Markup\Support\Builder;
 use Arcanedev\Markup\Entities\Tag;
+
+use Arcanedev\Markup\Tests\TestCase;
 
 class BuilderTest extends TestCase
 {
@@ -12,7 +14,7 @@ class BuilderTest extends TestCase
     /** @var Builder */
     private $builder;
 
-    const BUILDER_CLASS = 'Arcanedev\\Markup\\Builder';
+    const BUILDER_CLASS = 'Arcanedev\\Markup\\Support\\Builder';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

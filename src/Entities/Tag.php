@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\Markup\Entities;
 
-use Arcanedev\Markup\Builder;
-
+use Arcanedev\Markup\Support\Builder;
 use Arcanedev\Markup\Exceptions\InvalidTypeException;
 
 use Arcanedev\Markup\Contracts\Entities\TagInterface;

@@ -1,4 +1,4 @@
-<?php namespace Arcanedev\Markup;
+<?php namespace Arcanedev\Markup\Support;
 
 use Arcanedev\Markup\Contracts\BuilderInterface;
 use Arcanedev\Markup\Contracts\Entities\TagInterface;
