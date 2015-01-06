@@ -1,8 +1,10 @@
 <?php namespace Arcanedev\Markup\Entities;
 
 use Arcanedev\Markup\Builder;
-use Arcanedev\Markup\Contracts\Entities\TagInterface;
+
 use Arcanedev\Markup\Exceptions\InvalidTypeException;
+
+use Arcanedev\Markup\Contracts\Entities\TagInterface;
 
 class Tag implements TagInterface
 {
@@ -197,6 +199,8 @@ class Tag implements TagInterface
     {
         if (! is_null($parent)) {
             $this->parent = $parent;
+
+            $this->parent->elements[] = &$this;
         }
 
         return $this;
@@ -244,13 +248,31 @@ class Tag implements TagInterface
     }
 
     /**
+     * Define text content
+     *
+     * @param string $value
+     *
+     * @return Tag
+     */
+    public function text($value)
+    {
+        $this->addElement('')->setText($value);
+
+        return $this;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Elements Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
      * Render tag elements
      *
      * @return string
      */
     public function renderElements()
     {
-        if (count($this->elements) == 0) {
+        if (! $this->hasElements()) {
             return '';
         }
 
@@ -276,61 +298,101 @@ class Tag implements TagInterface
             $htmlTag      = $tag;
             $htmlTag->top = $this->top;
             $htmlTag->attrs($attributes);
+            $this->elements[] = $htmlTag;
         }
         else {
-            $parent     = is_null($this->parent) ? $this : $this->parent;
+            $parent     = $this->hasParent() ? $this->parent : $this;
             $htmlTag    = self::make($tag, $attributes, $parent);
         }
-
-        $this->elements[] = $htmlTag;
 
         return $htmlTag;
     }
 
     /**
-     * Define text content
+     * Get Tag elements count
      *
-     * @param string $value
-     *
-     * @return Tag
+     * @return int
      */
-    public function text($value)
+    public function countElements()
     {
-        $this->addElement('')->setText($value);
-
-        return $this;
+        return count($this->elements);
     }
+
     /**
      * Return first child of parent of current object
+     *
+     * @return Tag|null
      */
     public function getFirst()
     {
-        return ! is_null($this->parent)
-            ? $this->parent->elements[0]
-            : null;
+        $element = null;
+
+        if (
+            $this->hasParent() and
+            $this->parent->hasElements()
+        ) {
+            $element = $this->parent->elements[0];
+        }
+
+        return $element;
+    }
+
+    /**
+     * Get last child of parent of current object
+     *
+     * @return Tag|null
+     */
+    public function getNext()
+    {
+        if (
+            ! $this->hasParent() or
+            ! $this->parent->hasElements()
+        ) {
+            return null;
+        }
+
+        $next = null;
+        $find = false;
+
+        foreach ($this->parent->elements as $elt) {
+            if ($find) {
+                $next = &$elt;
+                break;
+            }
+
+            if ($elt == $this) {
+                $find = true;
+            }
+        }
+
+        return $next;
     }
 
     /**
      * Return last child of parent of current object
      *
-     * @return Tag
+     * @return Tag|null
      */
     public function getPrevious()
     {
+        if (
+            ! $this->hasParent() or
+            ! $this->parent->hasElements()
+        ) {
+            return null;
+        }
+
         $prev = null;
+        $find = false;
 
-        if (! is_null($this->parent)) {
-            $find = false;
+        foreach ($this->parent->elements as $elt) {
+            if ($elt == $this) {
+                $find = true;
+                break;
+            }
 
-            foreach ($this->parent->elements as $elt) {
-                if ($elt == $this) {
-                    $find = true;
-                    break;
-                }
-
-                if (! $find) {
-                    $prev = $elt;
-                }
+            if (! $find) {
+                $prev = $elt;
             }
         }
 
@@ -340,69 +402,91 @@ class Tag implements TagInterface
     /**
      * Get last child of parent of current object
      *
-     * @return Tag
-     */
-    public function getNext()
-    {
-        $next = null;
-        $find = false;
-
-        if (! is_null($this->parent)) {
-            foreach ($this->parent->elements as $elt) {
-                if ($find) {
-                    $next = &$elt;
-                    break;
-                }
-
-                if ($elt == $this) {
-                    $find = true;
-                }
-            }
-        }
-
-        return $next;
-    }
-
-    /**
-     * Get last child of parent of current object
-     *
-     * @return Tag
+     * @return Tag|null
      */
     public function getLast()
     {
-        return ! is_null($this->parent)
-            ? $this->parent->elements[count($this->parent->elements) - 1]
-            : null;
+        $element = null;
+
+        if (
+            $this->hasParent() and
+            $this->parent->hasElements()
+        ) {
+            $count   = $this->parent->countElements();
+            $element = $this->parent->elements[$count - 1];
+        }
+
+        return $element;
     }
 
     /**
-     * Return parent or null
+     * Remove element from parent
      *
-     * @return Markup
+     * @return Tag|null
      */
     public function remove()
     {
-        $parent = $this->parent;
-
-        if (is_null($parent)) {
-            return null;
-        }
-
-        foreach ($parent->elements as $key => $value) {
-            if ($parent->elements[$key] == $this) {
-                unset($parent->elements[$key]);
-
-                return $parent;
-            }
+        if ($this->hasParent()) {
+            return $this->parent->removeElement($this);
         }
 
         return null;
+    }
+
+    public function removeElement($tag)
+    {
+        $deleted = null;
+
+        if (! $this->hasElements()) {
+            return $deleted;
+        }
+
+        foreach ($this->elements as $key => $value) {
+            if ($this->elements[$key] == $tag) {
+                unset($this->elements[$key]);
+
+                $deleted = $this;
+                break;
+            }
+        }
+
+        return $deleted;
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if Tag has parent
+     *
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return ! is_null($this->parent);
+    }
+
+    /**
+     * Check if has attributes
+     *
+     * @return bool
+     */
+    public function hasAttributes()
+    {
+        return ! $this->attributes->isEmpty();
+    }
+
+    /**
+     * Check if Tag has elements
+     *
+     * @return bool
+     */
+    public function hasElements()
+    {
+        return $this->countElements() > 0;
+    }
+
     /**
      * Check if tag is a text object
      *
@@ -414,6 +498,19 @@ class Tag implements TagInterface
         $text = $this->getText();
 
         return empty($type) and ! empty($text);
+    }
+
+    /**
+     * Check if it's a tag object
+     *
+     * @param mixed $tag
+     *
+     * @return bool
+     */
+    private function isTagObject($tag)
+    {
+        return is_object($tag) and
+               get_class($tag) === get_class($this);
     }
 
     /**
@@ -432,28 +529,5 @@ class Tag implements TagInterface
         }
 
         $type = strtolower(trim($type));
-    }
-
-    /**
-     * Check if has attributes
-     *
-     * @return bool
-     */
-    public function hasAttributes()
-    {
-        return ! $this->attributes->isEmpty();
-    }
-
-    /**
-     * Check if it's a tag object
-     *
-     * @param mixed $tag
-     *
-     * @return bool
-     */
-    private function isTagObject($tag)
-    {
-        return is_object($tag) and
-               get_class($tag) === get_class($this);
     }
 }

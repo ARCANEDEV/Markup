@@ -1,7 +1,7 @@
 <?php namespace Arcanedev\Markup\Tests\Entities;
 
-
 use Arcanedev\Markup\Entities\Tag;
+
 use Arcanedev\Markup\Tests\TestCase;
 
 class TagTest extends TestCase
@@ -97,6 +97,7 @@ class TagTest extends TestCase
             'class' => 'btn btn-xs btn-primary'
         ]);
 
+        $this->assertTrue($this->tag->hasAttributes());
         $this->assertEquals(
             'href="#" title="Button title" class="btn btn-xs btn-primary"',
             $this->tag->renderAttributes()
@@ -164,9 +165,15 @@ class TagTest extends TestCase
         $this->tag->addElement($link);
 
         $this->assertEquals($output, $link->render());
+        $this->assertEquals($output, (string) $link);
+
         $this->assertEquals(
             '<p class="text-center">' . $output . '</p>',
             $this->tag->render()
+        );
+        $this->assertEquals(
+            '<p class="text-center">' . $output . '</p>',
+            (string) $this->tag
         );
 
         $this->tag->addElement('img', [
@@ -174,10 +181,10 @@ class TagTest extends TestCase
         ]);
         $output .= '<img src="logo.png" class="img-responsive"/>';
 
-        $this->assertEquals(
-            '<p class="text-center">' . $output . '</p>',
-            $this->tag->render()
-        );
+        $result = '<p class="text-center">' . $output . '</p>';
+
+        $this->assertEquals($result, $this->tag->render());
+        $this->assertEquals($result, (string) $this->tag);
     }
 
     /**
@@ -189,5 +196,83 @@ class TagTest extends TestCase
     public function testMustThrowInvalidTypeExceptionOnType()
     {
         Tag::make(true);
+    }
+
+    /**
+     * @test
+     */
+    public function testCanGetAndRemoveElements()
+    {
+        $container = Tag::make('div', ['class' => 'container']);
+        $paragraph = Tag::make('p', ['class' => 'text-center'], $container);
+        $anchor    = Tag::make('a', ['class' => 'btn btn-xs btn-danger'], $container);
+
+        $this->assertTrue($container->hasElements());
+        $this->assertEquals(2, $container->countElements());
+        $this->assertFalse($paragraph->hasElements());
+        $this->assertFalse($anchor->hasElements());
+
+        // First Element
+        $this->assertNull($container->getFirst());
+
+        $elt = $paragraph->getFirst();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('p', $elt->getType());
+
+        $elt = $anchor->getFirst();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('p', $elt->getType());
+
+        // Next Element
+        $this->assertNull($container->getNext());
+
+        $elt = $paragraph->getNext();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('a', $elt->getType());
+
+        $elt = $anchor->getNext();
+        $this->assertNull($elt);
+
+        // Previous Element
+        $this->assertNull($container->getPrevious());
+
+        $elt = $paragraph->getPrevious();
+        $this->assertNull($elt);
+
+        $elt = $anchor->getPrevious();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('p', $elt->getType());
+
+        // Last Element
+        $this->assertNull($container->getLast());
+
+        $elt = $paragraph->getLast();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('a', $elt->getType());
+
+        $elt = $anchor->getLast();
+        $this->assertInstanceOf(self::TAG_CLASS, $elt);
+        $this->assertEquals('a', $elt->getType());
+
+        // Remove Element
+        $this->assertNull($container->remove());
+
+        $parent = $anchor->remove();
+
+        $this->assertInstanceOf(self::TAG_CLASS, $parent);
+        $this->assertEquals($container, $parent);
+        $this->assertTrue($parent->hasElements());
+        $this->assertEquals(1, $parent->countElements());
+
+        $parent = $paragraph->remove();
+
+        $this->assertInstanceOf(self::TAG_CLASS, $parent);
+        $this->assertEquals($container, $parent);
+        $this->assertFalse($parent->hasElements());
+        $this->assertEquals(0, $parent->countElements());
+
+        $parent = $paragraph->remove();
+
+        $this->assertNull($parent);
     }
 }
