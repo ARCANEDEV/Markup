@@ -12,10 +12,18 @@ class Attribute implements AttributeInterface
      | ------------------------------------------------------------------------------------------------
      */
     /** @var string */
-    protected $name = '';
+    protected $name;
 
     /** @var array */
-    protected $values = [];
+    protected $values;
+
+    /** @var bool */
+    protected $singleValued;
+
+    /** @var array */
+    private $singles = [
+        'id', 'name', 'href', 'src', 'title', 'alt', 'width', 'height', 'disabled'
+    ];
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -29,8 +37,20 @@ class Attribute implements AttributeInterface
      */
     public function __construct($name, $values)
     {
+        $this->init();
+
         $this->setName($name);
         $this->setValues($values);
+    }
+
+    /**
+     * Init Object
+     */
+    private function init()
+    {
+        $this->name         = '';
+        $this->values       = [];
+        $this->singleValued = false;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -58,7 +78,8 @@ class Attribute implements AttributeInterface
     {
         $this->checkName($name);
 
-        $this->name = $name;
+        $this->name         = $name;
+        $this->singleValued = in_array($name, $this->singles);
 
         return $this;
     }
@@ -94,6 +115,22 @@ class Attribute implements AttributeInterface
     {
         $this->checkContent($values);
 
+        if ($this->isSingleValued()) {
+            return $this->addValue($values[0], true);
+        }
+
+        return $this->addManyValues($values);
+    }
+
+    /**
+     * Add many values to values property
+     *
+     * @param array $values
+     *
+     * @return Attribute
+     */
+    private function addManyValues($values)
+    {
         foreach($values as $value) {
             $this->addValue($value);
         }
@@ -102,14 +139,19 @@ class Attribute implements AttributeInterface
     }
 
     /**
-     * Add value to values
+     * Add value to values property
      *
      * @param string $value
+     * @param bool   $erase
      *
      * @return Attribute
      */
-    private function addValue($value)
+    private function addValue($value, $erase = false)
     {
+        if ($erase) {
+            $this->values = [];
+        }
+
         if (! in_array($value, $this->values)) {
             $this->values[] = $value;
         }
@@ -203,6 +245,16 @@ class Attribute implements AttributeInterface
     }
 
     /**
+     * Check if attribute is single valued
+     *
+     * @return bool
+     */
+    private function isSingleValued()
+    {
+        return $this->singleValued;
+    }
+
+    /**
      * Check attribute name
      *
      * @param string $name
@@ -240,10 +292,12 @@ class Attribute implements AttributeInterface
             );
         }
 
-        if (is_string($content)) {
+        if (is_string($content) and ! $this->isSingleValued()) {
             $content = explode(' ', $content);
         }
 
-        $content = array_map('trim', $content);
+        $content = is_array($content)
+            ? array_map('trim', $content)
+            : [$content];
     }
 }

@@ -137,4 +137,25 @@ class AttributeCollectionTest extends TestCase
         $values = $this->attributeCollection->getAttr('class')->values();
         $this->assertEquals(['btn', 'btn-xs'], $values);
     }
+
+    /**
+     * @test
+     */
+    public function testCanConvertToArray()
+    {
+        $attributes = [
+            'id'    => ['submit-btn'],
+            'name'  => ['submit-btn'],
+            'class' => ['btn', 'btn-sm', 'btn-danger btn-block']
+        ];
+
+        $this->attributeCollection->add('id',    $attributes['id'][0]);
+        $this->attributeCollection->add('name',  $attributes['name'][0]);
+        $this->attributeCollection->add('class', $attributes['class']);
+
+        $this->assertEquals(
+            $attributes,
+            $this->attributeCollection->toArray()
+        );
+    }
 }

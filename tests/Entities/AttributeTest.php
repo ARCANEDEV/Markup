@@ -72,7 +72,6 @@ class AttributeTest extends TestCase
         $this->attribute = Attribute::make('class', [
             'btn', 'btn-xs'
         ]);
-
         $this->assertEquals(2, count($this->attribute->values()));
         $this->assertEquals('class="btn btn-xs"', $this->attribute->render());
 
@@ -85,6 +84,22 @@ class AttributeTest extends TestCase
         $this->assertEquals(3, count($this->attribute->values()));
 
         $this->assertEquals('class="btn btn-xs btn-primary"', $this->attribute->render());
+    }
+
+    /**
+     * @test
+     */
+    public function testSingleValues()
+    {
+        $title = 'foo';
+        $this->attribute = Attribute::make('title', $title);
+
+        $this->assertEquals($title, $this->attribute->getValues());
+
+        $title = 'bar';
+        $this->attribute->addContent($title);
+
+        $this->assertEquals($title, $this->attribute->getValues());
     }
 
     /**
