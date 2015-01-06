@@ -94,7 +94,7 @@ class Collection implements Countable, ArrayAccess, Arrayable
      *
      * @return Collection
      */
-    protected function push($value)
+    public function push($value)
     {
         $this->items[] = $value;
 
@@ -184,7 +184,7 @@ class Collection implements Countable, ArrayAccess, Arrayable
      */
     public function offsetSet($key, $value)
     {
-        if ( is_null($key) ) {
+        if (is_null($key)) {
             $this->items[]      = $value;
         }
         else {
@@ -244,4 +244,3 @@ class Collection implements Countable, ArrayAccess, Arrayable
         return $value instanceof Closure ? $value() : $value;
     }
 }
-
