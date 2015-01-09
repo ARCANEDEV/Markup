@@ -114,11 +114,24 @@ class MarkupTest extends TestCase
      */
     public function testCanMakeStyleTag()
     {
-        $url   = 'assets/css/style.css';
-        $style = Markup::style($url, ['media' => 'all']);
-
+        $url    = 'assets/css/style.css';
+        $style  = Markup::style($url, ['media' => 'all']);
         $output = '<link rel="stylesheet" href="' . $url . '" type="text/css" media="all"/>';
+
         $this->assertEquals($output, $style->render());
         $this->assertEquals($output, (string) $style);
+    }
+
+    /**
+     * @test
+     */
+    public function testCanMakeScriptTag()
+    {
+        $src    = 'assets/js/app.js';
+        $script = Markup::script($src);
+        $output = '<script src="' . $src . '"></script>';
+
+        $this->assertEquals($output, $script->render());
+        $this->assertEquals($output, (string) $script);
     }
 }

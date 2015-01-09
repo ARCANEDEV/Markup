@@ -126,4 +126,16 @@ class Markup implements MarkupInterface
 
         return self::tag('link', $attributes);
     }
+
+    /**
+     * Create SCRIPT Tag
+     *
+     * @param string $src
+     *
+     * @return Tag
+     */
+    public static function script($src = '')
+    {
+        return self::tag('script', ['src'  => $src]);
+    }
 }
