@@ -64,4 +64,23 @@ interface MarkupInterface
      * @return TagInterface
      */
     public static function link($href = '', $text = '', array $attributes = []);
+
+    /**
+     * Create STYLE Tag
+     *
+     * @param string $href
+     * @param array  $attributes
+     *
+     * @return TagInterface
+     */
+    public static function style($href = '', array $attributes = []);
+
+    /**
+     * Create SCRIPT Tag
+     *
+     * @param string $src
+     *
+     * @return TagInterface
+     */
+    public static function script($src = '');
 }
