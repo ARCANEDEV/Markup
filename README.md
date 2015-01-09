@@ -1,8 +1,8 @@
 PHP HTML MARKUP GENERATOR
 ==============
 [![Travis Status](http://img.shields.io/travis/ARCANEDEV/Markup.svg?style=flat-square)](https://travis-ci.org/ARCANEDEV/Markup)
-[![Github Release](http://img.shields.io/github/release/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/releases)
 [![Coverage Status](http://img.shields.io/coveralls/ARCANEDEV/Markup.svg?style=flat-square)](https://coveralls.io/r/ARCANEDEV/Markup?branch=master)
+[![Github Release](http://img.shields.io/github/release/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/releases)
 [![Packagist License](http://img.shields.io/packagist/l/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/blob/master/LICENSE)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/arcanedev/markup.svg?style=flat-square)](https://packagist.org/packages/arcanedev/markup)
 [![Github Issues](http://img.shields.io/github/issues/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/issues)
