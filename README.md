@@ -33,7 +33,21 @@ Then install it via `composer install` or `composer update`.
 
 ### Laravel
 
-Coming soon...
+After the installation, include the service provider within `app/config/app.php`.
+```php
+'providers' => [
+    ...
+    'Arcanedev\Markup\Laravel\ServiceProvider',
+];
+```
+
+And finally, add the facade alias to this same file at the bottom:
+```php
+'aliases' => [
+    ...
+    'Markup' => 'Arcanedev\Markup\Laravel\Facade',
+];
+```
 
 ## USAGE
 
@@ -41,8 +55,10 @@ To generate your title tag for example :
 ```php
 $title = Markup::title('Hello world');
 echo $title->render()
+
 // or 
 echo Markup::title('Hello world');
+
 // The result: <title>Hello world</title>
 ```
 
@@ -51,12 +67,16 @@ And There is more:
 ```php
 echo Markup::img('img/logo.png', 'alt Logo', ['class' => 'logo img-responsive']);
 // Result : <img src="img/logo.png" alt="alt Logo" class="logo img-responsive"/> 
+
 echo Markup::meta('property', 'og:description', 'Site web description');
 // Result : <meta property="og:description" content="Site web description"/>
+
 echo Markup::link('page/about-us', 'About us', ['class' => 'btn btn-info']);
 // Result : <a href="page/about-us" class="btn btn-info">About us</a>
+
 echo Markup::style('assets/css/style.css', ['media' => 'all']);
 // Result : <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all"/>
+
 echo Markup::script('assets/js/app.js');
 // Result : <script src="assets/js/app.js"></script>
 ```
