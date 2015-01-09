@@ -15,26 +15,63 @@ Create HTML tags and render them efficiently.
     
     - PHP >= 5.4.0
     
-### Composer
+## Installation
+
+###Composer
 
 You can install the package via [Composer](http://getcomposer.org/). Add this to your `composer.json`:
 
-    {
-      "require": {
-        ...
-        "arcanedev/markup": "dev-master"
-        ...
-      }
+```json
+{
+    "require": {
+        "arcanedev/markup": "~1.0"
     }
+}
+```
     
-Then install via:
+Then install it via `composer install` or `composer update`.
 
-    composer.phar install
-    
+### Laravel
 
-### TODOS:
+Coming soon...
+
+## USAGE
+
+To generate your title tag for example :
+```php
+$title = Markup::title('Hello world');
+echo $title->render()
+// or 
+echo Markup::title('Hello world');
+// The result: <title>Hello world</title>
+```
+
+And There is more:
+
+```php
+echo Markup::img('img/logo.png', 'alt Logo', ['class' => 'logo img-responsive']);
+// Result : <img src="img/logo.png" alt="alt Logo" class="logo img-responsive"/> 
+echo Markup::meta('property', 'og:description', 'Site web description');
+// Result : <meta property="og:description" content="Site web description"/>
+echo Markup::link('page/about-us', 'About us', ['class' => 'btn btn-info']);
+// Result : <a href="page/about-us" class="btn btn-info">About us</a>
+echo Markup::style('assets/css/style.css', ['media' => 'all']);
+// Result : <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all"/>
+echo Markup::script('assets/js/app.js');
+// Result : <script src="assets/js/app.js"></script>
+```
+
+### TODO
 
   - [ ] Documentation
   - [ ] Examples
-  - [ ] More tests and code coverage.
-  - [ ] Refactoring.
+  - [x] More tests and code coverage (~99%)
+  - [ ] Refactoring
+  
+### Contribution
+
+Any ideas are welcome. Feel free the submit any issues or pull requests.
+  
+## License
+
+Markup package is licenced under the [MIT license](https://github.com/ARCANEDEV/Markup/blob/master/LICENSE).
