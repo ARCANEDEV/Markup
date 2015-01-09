@@ -108,4 +108,17 @@ class MarkupTest extends TestCase
         $this->assertEquals($output, $link->render());
         $this->assertEquals($output, (string) $link);
     }
+
+    /**
+     * @test
+     */
+    public function testCanMakeStyleTag()
+    {
+        $url   = 'assets/css/style.css';
+        $style = Markup::style($url, ['media' => 'all']);
+
+        $output = '<link rel="stylesheet" href="' . $url . '" type="text/css" media="all"/>';
+        $this->assertEquals($output, $style->render());
+        $this->assertEquals($output, (string) $style);
+    }
 }

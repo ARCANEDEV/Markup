@@ -107,4 +107,23 @@ class Markup implements MarkupInterface
 
         return self::tag('a', $attributes)->text($text);
     }
+
+    /**
+     * Create STYLE Tag
+     *
+     * @param string $href
+     * @param array  $attributes
+     *
+     * @return Tag
+     */
+    public static function style($href = '', array $attributes = [])
+    {
+        $attributes = array_merge([
+            'rel'   => 'stylesheet',
+            'href'  => $href,
+            'type'  => 'text/css'
+        ], $attributes);
+
+        return self::tag('link', $attributes);
+    }
 }
