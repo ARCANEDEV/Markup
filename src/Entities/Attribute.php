@@ -22,7 +22,7 @@ class Attribute implements AttributeInterface
 
     /** @var array */
     private $singles = [
-        'id', 'name', 'href', 'src', 'title', 'alt', 'width', 'height', 'disabled'
+        'id', 'name', 'href', 'src', 'title', 'alt', 'width', 'height', 'disabled', 'property', 'content'
     ];
 
     /* ------------------------------------------------------------------------------------------------

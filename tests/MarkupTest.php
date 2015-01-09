@@ -82,6 +82,11 @@ class MarkupTest extends TestCase
         $output = '<meta property="og:title" content="My website title"/>';
         $this->assertEquals($output, $meta->render());
         $this->assertEquals($output, (string) $meta);
+
+        $meta   = Markup::meta('name', 'keywords', 'keyword 1, keyword 2, keyword 3, keyword 4');
+        $output = '<meta name="keywords" content="keyword 1, keyword 2, keyword 3, keyword 4"/>';
+        $this->assertEquals($output, $meta->render());
+        $this->assertEquals($output, (string) $meta);
     }
 
     /**
