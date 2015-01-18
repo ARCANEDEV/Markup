@@ -1,10 +1,9 @@
-PHP HTML MARKUP GENERATOR
+PHP HTML MARKUP Generator [![Packagist License](http://img.shields.io/packagist/l/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/blob/master/LICENSE)
 ==============
 [![Travis Status](http://img.shields.io/travis/ARCANEDEV/Markup.svg?style=flat-square)](https://travis-ci.org/ARCANEDEV/Markup)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/Markup.svg?style=flat-square)](https://scrutinizer-ci.com/g/ARCANEDEV/Markup/?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/ARCANEDEV/Markup.svg?style=flat-square)](https://scrutinizer-ci.com/g/ARCANEDEV/Markup/?branch=master)
 [![Github Release](http://img.shields.io/github/release/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/releases)
-[![Packagist License](http://img.shields.io/packagist/l/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/blob/master/LICENSE)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/arcanedev/markup.svg?style=flat-square)](https://packagist.org/packages/arcanedev/markup)
 [![Github Issues](http://img.shields.io/github/issues/ARCANEDEV/Markup.svg?style=flat-square)](https://github.com/ARCANEDEV/Markup/issues)
 
@@ -82,16 +81,18 @@ echo Markup::script('assets/js/app.js');
 // Result : <script src="assets/js/app.js"></script>
 ```
 
+### Contribution
+
+Any ideas are welcome. Feel free the submit any issues or pull requests.
+
 ### TODO
 
   - [ ] Documentation
   - [ ] Examples
-  - [x] More tests and code coverage (~99%)
+  - [x] More tests and code coverage
+  - [x] Laravel Support (v4.2)
+  - [ ] Laravel Support (v5.0)
   - [ ] Refactoring
-  
-### Contribution
-
-Any ideas are welcome. Feel free the submit any issues or pull requests.
   
 ## License
 
