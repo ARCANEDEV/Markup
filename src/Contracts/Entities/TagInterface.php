@@ -39,7 +39,7 @@ interface TagInterface
     /**
      * Get Attributes
      *
-     * @return array
+     * @return string
      */
     public function renderAttributes();
 

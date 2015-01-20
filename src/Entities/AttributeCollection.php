@@ -17,8 +17,8 @@ class AttributeCollection extends Collection
     /**
      * Add Attribute
      *
-     * @param string $name
-     * @param string $value
+     * @param string       $name
+     * @param string|array $value
      *
      * @return $this
      */
