@@ -24,41 +24,51 @@ class ElementCollection extends Collection
     }
 
     /**
-     * Get Next Tag
+     * Get previous tag
      *
-     * @param  Tag  $element
-     * @param  bool $reversed
+     * @param  Tag $tag
      *
      * @return Tag|null
      */
-    public function getNext($element, $reversed = false)
+    public function getPrevious(Tag $tag)
     {
-        reset($this->items);
+        return $this->getNextItem($tag, array_reverse($this->items));
+    }
 
-        $items = $reversed
-            ? array_reverse($this->items)
-            : $this->items;
+    /**
+     * Get Next Tag
+     *
+     * @param  Tag $tag
+     *
+     * @return Tag|null
+     */
+    public function getNext(Tag $tag)
+    {
+        return $this->getNextItem($tag, $this->items);
+    }
 
-        $currentElt = $items[0];
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get next item from items array
+     *
+     * @param  Tag   $item
+     * @param  array $items
+     *
+     * @return Tag|null
+     */
+    private function getNextItem(Tag $item, $items)
+    {
+        $currentItem = $items[0];
 
-        while ($currentElt !== null and $currentElt !== $element) {
-            $currentElt = next($items);
+        while ($currentItem !== null and $currentItem !== $item) {
+            $currentItem = next($items);
         }
 
         $next = next($items);
 
         return $next !== false ? $next : null;
-    }
-
-    /**
-     * Get previous tag
-     *
-     * @param  Tag $element
-     *
-     * @return Tag|null
-     */
-    public function getPrevious(Tag $element)
-    {
-        return $this->getNext($element, true);
     }
 }
