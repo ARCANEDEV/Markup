@@ -19,9 +19,11 @@ class Collection implements Countable, ArrayAccess, Arrayable
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Constructor
+     *
      * @param Collection|array $items
      */
-    function __construct($items = [])
+    public function __construct($items = [])
     {
         $items = ! is_null($items)
             ? $this->getArrayableItems($items)
@@ -45,8 +47,10 @@ class Collection implements Countable, ArrayAccess, Arrayable
     }
 
     /**
-     * @param mixed      $key
-     * @param mixed|null $default
+     * Get an item
+     *
+     * @param  mixed      $key
+     * @param  mixed|null $default
      *
      * @return mixed
      */
@@ -60,10 +64,10 @@ class Collection implements Countable, ArrayAccess, Arrayable
     }
 
     /**
-     * Set an item in the collection by key.
+     * Set an item
      *
-     * @param mixed $key
-     * @param mixed $value
+     * @param  mixed $key
+     * @param  mixed $value
      *
      * @return Collection
      */
@@ -75,10 +79,10 @@ class Collection implements Countable, ArrayAccess, Arrayable
     }
 
     /**
-     * Put an item in the collection by key.
+     * Put an item
      *
-     * @param mixed $key
-     * @param mixed $value
+     * @param  mixed $key
+     * @param  mixed $value
      *
      * @return Collection
      */
@@ -90,7 +94,7 @@ class Collection implements Countable, ArrayAccess, Arrayable
     /**
      * Push an item
      *
-     * @param mixed $value
+     * @param  mixed $value
      *
      * @return Collection
      */
@@ -104,7 +108,7 @@ class Collection implements Countable, ArrayAccess, Arrayable
     /**
      * Check if has an item by Key
      *
-     * @param mixed $key
+     * @param  mixed $key
      *
      * @return bool
      */
@@ -117,7 +121,6 @@ class Collection implements Countable, ArrayAccess, Arrayable
      * Remove an item from the collection by key.
      *
      * @param  mixed  $key
-     * @return void
      */
     public function forget($key)
     {
@@ -189,8 +192,6 @@ class Collection implements Countable, ArrayAccess, Arrayable
      *
      * @param  mixed  $key
      * @param  mixed  $value
-     *
-     * @return void
      */
     public function offsetSet($key, $value)
     {
@@ -206,7 +207,6 @@ class Collection implements Countable, ArrayAccess, Arrayable
      * Unset the item at a given offset.
      *
      * @param  string  $key
-     * @return void
      */
     public function offsetUnset($key)
     {
@@ -216,6 +216,11 @@ class Collection implements Countable, ArrayAccess, Arrayable
     /* ------------------------------------------------------------------------------------------------
      |  Countable Function
      | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Count items
+     *
+     * @return int
      */
     public function count()
     {
@@ -245,7 +250,7 @@ class Collection implements Countable, ArrayAccess, Arrayable
     /**
      * Return the default value of the given value.
      *
-     * @param mixed $value
+     * @param  mixed $value
      *
      * @return mixed
      */
