@@ -1,6 +1,6 @@
-<?php namespace Arcanedev\Markup\Tests\Entities;
+<?php namespace Arcanedev\Markup\Tests\Entities\Tag;
 
-use Arcanedev\Markup\Entities\Attribute;
+use Arcanedev\Markup\Entities\Tag\Attribute;
 
 use Arcanedev\Markup\Tests\TestCase;
 
@@ -13,7 +13,7 @@ class AttributeTest extends TestCase
     /** @var Attribute */
     private $attribute;
 
-    const ATTRIBUTE_CLASS = 'Arcanedev\\Markup\\Entities\\Attribute';
+    const ATTRIBUTE_CLASS = 'Arcanedev\\Markup\\Entities\\Tag\\Attribute';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

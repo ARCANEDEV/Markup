@@ -1,7 +1,7 @@
-<?php namespace Arcanedev\Markup\Tests\Entities;
+<?php namespace Arcanedev\Markup\Tests\Entities\Tag;
 
+use Arcanedev\Markup\Entities\Tag\AttributeCollection;
 use Arcanedev\Markup\Tests\TestCase;
-use Arcanedev\Markup\Entities\AttributeCollection;
 
 class AttributeCollectionTest extends TestCase
 {
@@ -12,7 +12,7 @@ class AttributeCollectionTest extends TestCase
     /** @var AttributeCollection */
     private $attributeCollection;
 
-    const ATTRIBUTES_COLLECTION_CLASS = 'Arcanedev\\Markup\\Entities\\AttributeCollection';
+    const ATTRIBUTES_CLASS = 'Arcanedev\\Markup\\Entities\\Tag\\AttributeCollection';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -42,7 +42,7 @@ class AttributeCollectionTest extends TestCase
     public function testCanBeInstantiated()
     {
         $this->assertInstanceOf(
-            self::ATTRIBUTES_COLLECTION_CLASS,
+            self::ATTRIBUTES_CLASS,
             $this->attributeCollection
         );
 

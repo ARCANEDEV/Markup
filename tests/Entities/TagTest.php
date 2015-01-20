@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\Markup\Tests\Entities;
 
 use Arcanedev\Markup\Entities\Tag;
-
 use Arcanedev\Markup\Tests\TestCase;
 
 class TagTest extends TestCase
@@ -10,9 +9,10 @@ class TagTest extends TestCase
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    const TAG_CLASS = 'Arcanedev\\Markup\\Entities\\Tag';
     /** @var Tag */
     private $tag;
+
+    const TAG_CLASS = 'Arcanedev\\Markup\\Entities\\Tag';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

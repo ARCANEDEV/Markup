@@ -1,4 +1,4 @@
-<?php namespace Arcanedev\Markup\Entities;
+<?php namespace Arcanedev\Markup\Entities\Tag;
 
 use Arcanedev\Markup\Contracts\Entities\AttributeInterface;
 
