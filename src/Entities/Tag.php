@@ -423,8 +423,8 @@ class Tag implements TagInterface
 
         $deleted = null;
 
-        foreach ($this->elements->keys() as $key) {
-            if ($this->elements->get($key) === $tag) {
+        foreach ($this->elements->toArray() as $key => $element) {
+            if ($element === $tag) {
                 $this->elements->forget($key);
 
                 $deleted = $this;
