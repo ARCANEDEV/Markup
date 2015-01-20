@@ -2,6 +2,7 @@
 
 use Arcanedev\Markup\Contracts\Entities\TagInterface;
 use Arcanedev\Markup\Entities\Tag\AttributeCollection;
+use Arcanedev\Markup\Entities\Tag\ElementCollection;
 use Arcanedev\Markup\Exceptions\InvalidTypeException;
 use Arcanedev\Markup\Support\Builder;
 
@@ -14,9 +15,6 @@ class Tag implements TagInterface
     /** @var string */
     private $type;
 
-    /** @var AttributeCollection */
-    protected $attributes;
-
     /** @var string */
     protected $text;
 
@@ -26,7 +24,10 @@ class Tag implements TagInterface
     /** @var Tag */
     private $parent;
 
-    /** @var array */
+    /** @var AttributeCollection */
+    protected $attributes;
+
+    /** @var ElementCollection */
     private $elements;
 
     /* ------------------------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ class Tag implements TagInterface
     {
         $this->parent     = null;
         $this->attributes = new AttributeCollection;
-        $this->elements   = [];
+        $this->elements   = new ElementCollection;
         $this->text       = '';
     }
 
@@ -199,7 +200,7 @@ class Tag implements TagInterface
         if (! is_null($parent)) {
             $this->parent = $parent;
 
-            $this->parent->elements[] = &$this;
+            $this->parent->elements->addElement($this);
         }
 
         return $this;
@@ -283,7 +284,7 @@ class Tag implements TagInterface
         $output = array_map(function($tag) {
             /** @var Tag $tag */
             return $tag->render();
-        }, $this->elements);
+        }, $this->elements->toArray());
 
         return implode('', $output);
     }
@@ -355,16 +356,7 @@ class Tag implements TagInterface
             return null;
         }
 
-        foreach ($this->parent->elements as $index => $elt) {
-            if (
-                $elt === $this and
-                isset($this->parent->elements[$index + 1])
-            ) {
-                return $this->parent->elements[$index + 1];
-            }
-        }
-
-        return null;
+        return $this->parent->elements->getNext($this);
     }
 
     /**
@@ -381,16 +373,7 @@ class Tag implements TagInterface
             return null;
         }
 
-        foreach ($this->parent->elements as $index => $elt) {
-            if (
-                $elt === $this and
-                isset($this->parent->elements[$index - 1])
-            ) {
-                return $this->parent->elements[$index - 1];
-            }
-        }
-
-        return null;
+        return $this->parent->elements->getPrevious($this);
     }
 
     /**
@@ -434,15 +417,15 @@ class Tag implements TagInterface
      */
     public function removeElement($tag)
     {
-        $deleted = null;
-
         if (! $this->hasElements()) {
-            return $deleted;
+            return null;
         }
 
-        foreach (array_keys($this->elements) as $key) {
-            if ($this->elements[$key] == $tag) {
-                unset($this->elements[$key]);
+        $deleted = null;
+
+        foreach ($this->elements->keys() as $key) {
+            if ($this->elements->get($key) === $tag) {
+                $this->elements->forget($key);
 
                 $deleted = $this;
                 break;
