@@ -381,10 +381,13 @@ class Tag implements TagInterface
             return null;
         }
 
-        foreach ($this->parent->elements as $elt) {
-            if ($elt === $this) { break; }
-
-            return $elt;
+        foreach ($this->parent->elements as $index => $elt) {
+            if (
+                $elt === $this and
+                isset($this->parent->elements[$index - 1])
+            ) {
+                return $this->parent->elements[$index - 1];
+            }
         }
 
         return null;
