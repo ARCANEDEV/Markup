@@ -24,7 +24,7 @@ You can install the package via [Composer](http://getcomposer.org/). Add this to
 ```json
 {
     "require": {
-        "arcanedev/markup": "~1.0"
+        "arcanedev/markup": "~1.1"
     }
 }
 ```
