@@ -87,6 +87,13 @@ class ElementCollection extends Collection
         return $next !== false ? $next : null;
     }
 
+    /**
+     * Remove tag element from collection
+     *
+     * @param  Tag $tag
+     *
+     * @return array
+     */
     public function remove($tag)
     {
         if ($this->count() == 0) {
