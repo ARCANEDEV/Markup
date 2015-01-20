@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\Markup\Entities;
 
 use Arcanedev\Markup\Contracts\Entities\TagInterface;
-use Arcanedev\Markup\Entities\Tag\AttributeCollection;
 use Arcanedev\Markup\Entities\Tag\ElementCollection;
+use Arcanedev\Markup\Entities\Traits\Attributeable;
+use Arcanedev\Markup\Entities\Traits\Typeable;
 use Arcanedev\Markup\Support\Builder;
 
 class Tag implements TagInterface
@@ -11,7 +12,8 @@ class Tag implements TagInterface
      |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    use \Arcanedev\Markup\Entities\Traits\Typeable;
+    use Typeable;
+    use Attributeable;
 
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -25,9 +27,6 @@ class Tag implements TagInterface
 
     /** @var Tag */
     private $parent;
-
-    /** @var AttributeCollection */
-    protected $attributes;
 
     /** @var ElementCollection */
     private $elements;
@@ -46,11 +45,11 @@ class Tag implements TagInterface
     public function __construct($type, array $attributes = [], $parent = null)
     {
         $this->parent     = null;
-        $this->attributes = new AttributeCollection;
         $this->elements   = new ElementCollection;
         $this->text       = '';
 
         $this->setType($type);
+        $this->initAttributes();
         $this->setAttributes($attributes);
         $this->setParent($parent);
     }
@@ -73,67 +72,6 @@ class Tag implements TagInterface
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Set many attributes
-     *
-     * @param  array $attributes
-     *
-     * @return Tag
-     */
-    public function setAttributes(array $attributes)
-    {
-        $this->attributes->addMany($attributes);
-
-        return $this;
-    }
-
-    /**
-     * Set many attributes (Alias)
-     *
-     * @param  array $attributes
-     *
-     * @return Tag
-     */
-    public function attrs(array $attributes)
-    {
-        return $this->setAttributes($attributes);
-    }
-
-    /**
-     * Get Attributes
-     *
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes->toArray();
-    }
-
-    /**
-     * Get Attributes
-     *
-     * @return string
-     */
-    public function renderAttributes()
-    {
-        return $this->attributes->render();
-    }
-
-    /**
-     * Alias to method "set"
-     *
-     * @param  string       $name
-     * @param  string|array $value
-     *
-     * @return Tag
-     */
-    public function attr($name, $value)
-    {
-        $this->attributes->add($name, $value);
-
-        return $this;
-    }
-
     /**
      * Get parent Tag
      *
@@ -379,17 +317,6 @@ class Tag implements TagInterface
     {
         return $this->hasParent() and
                $this->parent->hasElements();
-    }
-
-    /**
-     * Check if has attributes
-     *
-     * @return bool
-     */
-    public function hasAttributes()
-    {
-        return ! empty($this->attributes) and
-               ! $this->attributes->isEmpty();
     }
 
     /**
