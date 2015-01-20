@@ -120,8 +120,8 @@ class AttributeCollection extends Collection implements AttributeCollectionInter
     /**
      * Forget an attribute value
      *
-     * @param  string       $name
-     * @param  string|array $value
+     * @param  string $name
+     * @param  string $value
      *
      * @return AttributeCollection
      */
