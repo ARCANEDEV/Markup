@@ -293,12 +293,20 @@ class Attribute implements AttributeInterface
             );
         }
 
-        if (is_string($content) and ! $this->isSingleValued()) {
-            $content = explode(' ', $content);
-        }
+        $this->checkSingleValuedContent($content);
 
-        return is_array($content)
-            ? array_map('trim', $content)
-            : [$content];
+        return is_array($content) ? $content : [$content];
+    }
+
+    /**
+     * Check if content is single valued
+     *
+     * @param string $content
+     */
+    private function checkSingleValuedContent(&$content)
+    {
+        if (is_string($content) and ! $this->isSingleValued()) {
+            $content = array_map('trim', explode(' ', $content));
+        }
     }
 }
