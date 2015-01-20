@@ -349,14 +349,9 @@ class Tag implements TagInterface
      */
     public function getNext()
     {
-        if (
-            ! $this->hasParent() or
-            ! $this->parent->hasElements()
-        ) {
-            return null;
-        }
-
-        return $this->parent->elements->getNext($this);
+        return $this->isParentHasElements()
+            ? $this->parent->elements->getNext($this)
+            : null;
     }
 
     /**
@@ -366,14 +361,9 @@ class Tag implements TagInterface
      */
     public function getPrevious()
     {
-        if (
-            ! $this->hasParent() or
-            ! $this->parent->hasElements()
-        ) {
-            return null;
-        }
-
-        return $this->parent->elements->getPrevious($this);
+        return $this->isParentHasElements()
+            ? $this->parent->elements->getPrevious($this)
+            : null;
     }
 
     /**
@@ -383,17 +373,9 @@ class Tag implements TagInterface
      */
     public function getLast()
     {
-        $element = null;
-
-        if (
-            $this->hasParent() and
-            $this->parent->hasElements()
-        ) {
-            $count   = $this->parent->countElements();
-            $element = $this->parent->elements[$count - 1];
-        }
-
-        return $element;
+        return $this->isParentHasElements()
+            ? $this->parent->elements->last()
+            : null;
     }
 
     /**
@@ -447,6 +429,17 @@ class Tag implements TagInterface
     public function hasParent()
     {
         return ! is_null($this->parent);
+    }
+
+    /**
+     * Check if Parent Tag has elements
+     *
+     * @return bool
+     */
+    private function isParentHasElements()
+    {
+        return $this->hasParent() and
+               $this->parent->hasElements();
     }
 
     /**
