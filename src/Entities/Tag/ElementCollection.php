@@ -47,6 +47,21 @@ class ElementCollection extends Collection
         return $this->getNextItem($tag, $this->items);
     }
 
+    /**
+     * Render tag elements
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $output = $this->each(function($tag) {
+            /** @var Tag $tag */
+            return $tag->render();
+        });
+
+        return implode('', $output->toArray());
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------

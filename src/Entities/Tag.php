@@ -43,21 +43,14 @@ class Tag implements TagInterface
      */
     public function __construct($type, array $attributes = [], $parent = null)
     {
-        $this->init();
-        $this->setType($type);
-        $this->setAttributes($attributes);
-        $this->setParent($parent);
-    }
-
-    /**
-     * Init Tag Object
-     */
-    private function init()
-    {
         $this->parent     = null;
         $this->attributes = new AttributeCollection;
         $this->elements   = new ElementCollection;
         $this->text       = '';
+
+        $this->setType($type);
+        $this->setAttributes($attributes);
+        $this->setParent($parent);
     }
 
     /**
@@ -280,13 +273,7 @@ class Tag implements TagInterface
         if (! $this->hasElements()) {
             return '';
         }
-
-        $output = array_map(function($tag) {
-            /** @var Tag $tag */
-            return $tag->render();
-        }, $this->elements->toArray());
-
-        return implode('', $output);
+        return $this->elements->render();
     }
 
     /**
@@ -303,14 +290,16 @@ class Tag implements TagInterface
             $htmlTag      = $tag;
             $htmlTag->top = $this->top;
             $htmlTag->attrs($attributes);
-            $this->elements[] = $htmlTag;
-        }
-        else {
-            $parent     = $this->hasParent() ? $this->parent : $this;
-            $htmlTag    = self::make($tag, $attributes, $parent);
+            $this->elements->addElement($htmlTag);
+
+            return $htmlTag;
         }
 
-        return $htmlTag;
+        return self::make(
+            $tag,
+            $attributes,
+            $this->hasParent() ? $this->parent : $this
+        );
     }
 
     /**
@@ -400,11 +389,11 @@ class Tag implements TagInterface
     public function removeElement($tag)
     {
         foreach ($this->elements->toArray() as $key => $element) {
-            if ($element === $tag) {
-                $this->elements->forget($key);
+            if ($element !== $tag) continue;
 
-                return $this;
-            }
+            $this->elements->forget($key);
+
+            return $this;
         }
 
         return null;
