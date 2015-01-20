@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\Markup\Entities\Tag;
 
+use Arcanedev\Markup\Contracts\Entities\Tag\AttributeCollectionInterface;
 use Arcanedev\Markup\Support\Collection;
 
-class AttributeCollection extends Collection
+class AttributeCollection extends Collection implements AttributeCollectionInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -17,10 +18,10 @@ class AttributeCollection extends Collection
     /**
      * Add Attribute
      *
-     * @param string       $name
-     * @param string|array $value
+     * @param  string       $name
+     * @param  string|array $value
      *
-     * @return $this
+     * @return AttributeCollection
      */
     public function add($name, $value)
     {
@@ -37,9 +38,9 @@ class AttributeCollection extends Collection
     /**
      * Add many attributes to collection
      *
-     * @param array $attributes
+     * @param  array $attributes
      *
-     * @return $this
+     * @return AttributeCollection
      */
     public function addMany(array $attributes)
     {
@@ -69,7 +70,7 @@ class AttributeCollection extends Collection
     /**
      * Get Attribute from collection
      *
-     * @param string $name
+     * @param  string $name
      *
      * @return Attribute|null
      */
@@ -81,8 +82,8 @@ class AttributeCollection extends Collection
     /**
      * Adding a new attribute to collection
      *
-     * @param string       $name
-     * @param string|array $value
+     * @param  string       $name
+     * @param  string|array $value
      *
      * @return AttributeCollection
      */
@@ -98,10 +99,10 @@ class AttributeCollection extends Collection
     /**
      * Updating existing attribute
      *
-     * @param string       $name
-     * @param string|array $value
+     * @param  string       $name
+     * @param  string|array $value
      *
-     * @return $this
+     * @return AttributeCollection
      */
     private function updateAttribute($name, $value)
     {
@@ -116,6 +117,14 @@ class AttributeCollection extends Collection
         return $this;
     }
 
+    /**
+     * Forget an attribute value
+     *
+     * @param  string       $name
+     * @param  string|array $value
+     *
+     * @return AttributeCollection
+     */
     public function forgetValue($name, $value)
     {
         if ($this->has($name)) {
@@ -127,6 +136,11 @@ class AttributeCollection extends Collection
         return $this;
     }
 
+    /**
+     * Convert to array
+     *
+     * @return array
+     */
     public function toArray()
     {
         $attributes = $this->each(function($attribute) {

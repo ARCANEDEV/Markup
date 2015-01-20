@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\Markup\Entities\Tag;
 
+use Arcanedev\Markup\Contracts\Entities\Tag\TypeInterface;
 use Arcanedev\Markup\Exceptions\InvalidTypeException;
 
-class Type
+class Type implements TypeInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -25,6 +26,8 @@ class Type
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Get Name
+     *
      * @return string
      */
     public function getName()
@@ -47,11 +50,6 @@ class Type
 
         return $this;
     }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
-     */
 
     /* ------------------------------------------------------------------------------------------------
      |  Check Functions

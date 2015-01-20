@@ -1,9 +1,10 @@
 <?php namespace Arcanedev\Markup\Entities\Tag;
 
+use Arcanedev\Markup\Contracts\Entities\Tag\ElementCollectionInterface;
 use Arcanedev\Markup\Entities\Tag;
 use Arcanedev\Markup\Support\Collection;
 
-class ElementCollection extends Collection
+class ElementCollection extends Collection implements ElementCollectionInterface
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
