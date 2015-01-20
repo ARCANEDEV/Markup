@@ -301,7 +301,7 @@ class Attribute implements AttributeInterface
     /**
      * Check if content is single valued
      *
-     * @param string $content
+     * @param string|array $content
      */
     private function checkSingleValuedContent(&$content)
     {
