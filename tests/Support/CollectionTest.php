@@ -164,4 +164,32 @@ class CollectionTest extends TestCase
             'bar' => 'FOO'
         ], $collection->all());
     }
+
+    /**
+     * @test
+     */
+    public function testCanGetOnlyKeys()
+    {
+        $items = [
+            'foo' => 'Hello',
+            'bar' => 'World'
+        ];
+        $this->collection = new Collection($items);
+
+        $this->assertEquals(array_keys($items), $this->collection->keys());
+    }
+
+    /**
+     * @test
+     */
+    public function testCanGetLastItem()
+    {
+        $items = [
+            'foo' => 'Bar',
+            'bar' => 'Foo'
+        ];
+        $this->collection = new Collection($items);
+
+        $this->assertEquals('Foo', $this->collection->last());
+    }
 }
