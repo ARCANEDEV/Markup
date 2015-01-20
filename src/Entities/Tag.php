@@ -3,18 +3,20 @@
 use Arcanedev\Markup\Contracts\Entities\TagInterface;
 use Arcanedev\Markup\Entities\Tag\AttributeCollection;
 use Arcanedev\Markup\Entities\Tag\ElementCollection;
-use Arcanedev\Markup\Entities\Tag\Type;
 use Arcanedev\Markup\Support\Builder;
 
 class Tag implements TagInterface
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use \Arcanedev\Markup\Entities\Traits\Typeable;
+
+    /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /** @var Type */
-    private $type;
-
     /** @var string */
     protected $text;
 
@@ -48,7 +50,7 @@ class Tag implements TagInterface
         $this->elements   = new ElementCollection;
         $this->text       = '';
 
-        $this->type = new Type($type);
+        $this->setType($type);
         $this->setAttributes($attributes);
         $this->setParent($parent);
     }
@@ -71,16 +73,6 @@ class Tag implements TagInterface
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Get Type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type->getName();
-    }
-
     /**
      * Set many attributes
      *
@@ -128,21 +120,6 @@ class Tag implements TagInterface
     }
 
     /**
-     * Define an attribute
-     *
-     * @param  string       $name
-     * @param  string|array $value
-     *
-     * @return Tag
-     */
-    public function set($name, $value)
-    {
-        $this->attributes->add($name, $value);
-
-        return $this;
-    }
-
-    /**
      * Alias to method "set"
      *
      * @param  string       $name
@@ -152,7 +129,9 @@ class Tag implements TagInterface
      */
     public function attr($name, $value)
     {
-        return $this->set($name, $value);
+        $this->attributes->add($name, $value);
+
+        return $this;
     }
 
     /**
@@ -421,17 +400,5 @@ class Tag implements TagInterface
     public function hasElements()
     {
         return $this->countElements() > 0;
-    }
-
-    /**
-     * Check if tag is a text object
-     *
-     * @return bool
-     */
-    public function isTextType()
-    {
-        $text = $this->getText();
-
-        return $this->type->isEmpty() and ! empty($text);
     }
 }

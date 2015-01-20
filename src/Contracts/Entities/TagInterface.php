@@ -44,16 +44,6 @@ interface TagInterface
     public function renderAttributes();
 
     /**
-     * Define an attribute
-     *
-     * @param string       $name
-     * @param string|array $value
-     *
-     * @return TagInterface
-     */
-    public function set($name, $value);
-
-    /**
      * Alias to method "set"
      *
      * @param string       $name
@@ -102,13 +92,6 @@ interface TagInterface
      * @return TagInterface
      */
     public function text($value);
-
-    /**
-     * Check if tag is a text object
-     *
-     * @return bool
-     */
-    public function isTextType();
 
     /**
      * Check if has attributes

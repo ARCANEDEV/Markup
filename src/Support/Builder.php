@@ -27,7 +27,10 @@ class Builder implements BuilderInterface
      */
     public static function make(TagInterface $tag)
     {
-        if ($tag->isTextType()) {
+        if (
+            $tag->getType() === '' and
+            $tag->getText() !== ''
+        ) {
             return $tag->getText();
         }
 
