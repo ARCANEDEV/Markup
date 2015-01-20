@@ -355,21 +355,16 @@ class Tag implements TagInterface
             return null;
         }
 
-        $next = null;
-        $find = false;
-
-        foreach ($this->parent->elements as $elt) {
-            if ($find) {
-                $next = &$elt;
-                break;
-            }
-
-            if ($elt == $this) {
-                $find = true;
+        foreach ($this->parent->elements as $index => $elt) {
+            if (
+                $elt === $this and
+                isset($this->parent->elements[$index + 1])
+            ) {
+                return $this->parent->elements[$index + 1];
             }
         }
 
-        return $next;
+        return null;
     }
 
     /**
