@@ -191,7 +191,7 @@ class TagTest extends TestCase
      * @test
      *
      * @expectedException \Arcanedev\Markup\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage The type tag must be a string, boolean is given.
+     * @expectedExceptionMessage The tag type must be a string, boolean is given.
      */
     public function testMustThrowInvalidTypeExceptionOnType()
     {

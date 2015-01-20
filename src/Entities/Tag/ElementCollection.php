@@ -16,7 +16,7 @@ class ElementCollection extends Collection
      *
      * @return ElementCollection
      */
-    public function addElement(&$tag)
+    public function add(&$tag)
     {
         $this->push($tag);
 
@@ -85,5 +85,26 @@ class ElementCollection extends Collection
         $next = next($items);
 
         return $next !== false ? $next : null;
+    }
+
+    public function remove($tag)
+    {
+        if ($this->count() == 0) {
+            return [$this, null];
+        }
+
+        $deleted = null;
+
+        foreach ($this->items as $key => $element) {
+            if ($element === $tag) {
+                $this->forget($key);
+
+                $deleted = $tag;
+
+                break;
+            }
+        }
+
+        return [$this, $deleted];
     }
 }

@@ -3,7 +3,7 @@
 use Arcanedev\Markup\Contracts\Entities\TagInterface;
 use Arcanedev\Markup\Entities\Tag\AttributeCollection;
 use Arcanedev\Markup\Entities\Tag\ElementCollection;
-use Arcanedev\Markup\Exceptions\InvalidTypeException;
+use Arcanedev\Markup\Entities\Tag\Type;
 use Arcanedev\Markup\Support\Builder;
 
 class Tag implements TagInterface
@@ -12,7 +12,7 @@ class Tag implements TagInterface
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /** @var string */
+    /** @var Type */
     private $type;
 
     /** @var string */
@@ -48,7 +48,7 @@ class Tag implements TagInterface
         $this->elements   = new ElementCollection;
         $this->text       = '';
 
-        $this->setType($type);
+        $this->type = new Type($type);
         $this->setAttributes($attributes);
         $this->setParent($parent);
     }
@@ -78,23 +78,7 @@ class Tag implements TagInterface
      */
     public function getType()
     {
-        return $this->type;
-    }
-
-    /**
-     * Set Type
-     *
-     * @param  string $type
-     *
-     * @return Tag
-     */
-    private function setType($type)
-    {
-        $this->checkType($type);
-
-        $this->type = $type;
-
-        return $this;
+        return $this->type->getName();
     }
 
     /**
@@ -193,7 +177,7 @@ class Tag implements TagInterface
         if (! is_null($parent)) {
             $this->parent = $parent;
 
-            $this->parent->elements->addElement($this);
+            $this->parent->elements->add($this);
         }
 
         return $this;
@@ -270,10 +254,9 @@ class Tag implements TagInterface
      */
     public function renderElements()
     {
-        if (! $this->hasElements()) {
-            return '';
-        }
-        return $this->elements->render();
+        return $this->hasElements()
+            ? $this->elements->render()
+            : '';
     }
 
     /**
@@ -290,7 +273,7 @@ class Tag implements TagInterface
             $htmlTag      = $tag;
             $htmlTag->top = $this->top;
             $htmlTag->attrs($attributes);
-            $this->elements->addElement($htmlTag);
+            $this->elements->add($htmlTag);
 
             return $htmlTag;
         }
@@ -388,15 +371,10 @@ class Tag implements TagInterface
      */
     public function removeElement($tag)
     {
-        foreach ($this->elements->toArray() as $key => $element) {
-            if ($element !== $tag) continue;
+        list($elements, $deleted) = $this->elements->remove($tag);
+        $this->elements = $elements;
 
-            $this->elements->forget($key);
-
-            return $this;
-        }
-
-        return null;
+        return $deleted ? $this : null;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -452,27 +430,8 @@ class Tag implements TagInterface
      */
     public function isTextType()
     {
-        $type = $this->getType();
         $text = $this->getText();
 
-        return empty($type) and ! empty($text);
-    }
-
-    /**
-     * Check Type
-     *
-     * @param  string $type
-     *
-     * @throws InvalidTypeException
-     */
-    private function checkType(&$type)
-    {
-        if (! is_string($type)) {
-            throw new InvalidTypeException(
-                'The type tag must be a string, '.gettype($type) . ' is given.'
-            );
-        }
-
-        $type = strtolower(trim($type));
+        return $this->type->isEmpty() and ! empty($text);
     }
 }
