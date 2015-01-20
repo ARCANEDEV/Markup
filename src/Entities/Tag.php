@@ -473,7 +473,7 @@ class Tag implements TagInterface
      */
     public function hasAttributes()
     {
-        return ! $this->attributes->isEmpty();
+        return ! empty($this->attributes) and ! $this->attributes->isEmpty();
     }
 
     /**
@@ -508,8 +508,7 @@ class Tag implements TagInterface
      */
     private function isTagObject($tag)
     {
-        return is_object($tag) and
-               get_class($tag) === get_class($this);
+        return $tag instanceof self;
     }
 
     /**
