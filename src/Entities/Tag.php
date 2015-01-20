@@ -399,22 +399,15 @@ class Tag implements TagInterface
      */
     public function removeElement($tag)
     {
-        if (! $this->hasElements()) {
-            return null;
-        }
-
-        $deleted = null;
-
         foreach ($this->elements->toArray() as $key => $element) {
             if ($element === $tag) {
                 $this->elements->forget($key);
 
-                $deleted = $this;
-                break;
+                return $this;
             }
         }
 
-        return $deleted;
+        return null;
     }
 
     /* ------------------------------------------------------------------------------------------------
