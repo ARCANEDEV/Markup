@@ -440,7 +440,7 @@ class Tag implements TagInterface
             return $deleted;
         }
 
-        foreach ($this->elements as $key => $value) {
+        foreach (array_keys($this->elements) as $key) {
             if ($this->elements[$key] == $tag) {
                 unset($this->elements[$key]);
 
