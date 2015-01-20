@@ -26,7 +26,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this->package('arcanedev/markup', 'markup', __DIR__ . '/..');
+        $this->package(
+            'arcanedev/markup',
+            'markup',
+            realpath(__DIR__ . '/..')
+        );
     }
 
     /**
