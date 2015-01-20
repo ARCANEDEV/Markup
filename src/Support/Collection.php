@@ -159,6 +159,16 @@ class Collection implements Countable, ArrayAccess, Arrayable
         return array_keys($this->items);
     }
 
+    /**
+     * Get last item
+     *
+     * @return mixed|null
+     */
+    public function last()
+    {
+        return $this->count() > 0 ? end($this->items) : null;
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  ArrayAccess Functions
      | ------------------------------------------------------------------------------------------------
