@@ -62,9 +62,9 @@ class Tag implements TagInterface
     /**
      * Make a Tag
      *
-     * @param string $type
-     * @param array  $attributes
-     * @param mixed  $parent
+     * @param  string   $type
+     * @param  array    $attributes
+     * @param  Tag|null $parent
      *
      * @return Tag
      */
@@ -90,7 +90,7 @@ class Tag implements TagInterface
     /**
      * Set Type
      *
-     * @param mixed $type
+     * @param  string $type
      *
      * @return Tag
      */
@@ -106,7 +106,7 @@ class Tag implements TagInterface
     /**
      * Set many attributes
      *
-     * @param array $attributes
+     * @param  array $attributes
      *
      * @return Tag
      */
@@ -120,7 +120,7 @@ class Tag implements TagInterface
     /**
      * Set many attributes (Alias)
      *
-     * @param array $attributes
+     * @param  array $attributes
      *
      * @return Tag
      */
@@ -152,8 +152,8 @@ class Tag implements TagInterface
     /**
      * Define an attribute
      *
-     * @param string       $name
-     * @param string|array $value
+     * @param  string       $name
+     * @param  string|array $value
      *
      * @return Tag
      */
@@ -167,8 +167,8 @@ class Tag implements TagInterface
     /**
      * Alias to method "set"
      *
-     * @param string       $name
-     * @param string|array $value
+     * @param  string       $name
+     * @param  string|array $value
      *
      * @return Tag
      */
@@ -190,7 +190,7 @@ class Tag implements TagInterface
     /**
      * Set Parent
      *
-     * @param Tag|null $parent
+     * @param  Tag|null $parent
      *
      * @return Tag
      */
@@ -227,6 +227,11 @@ class Tag implements TagInterface
         return $this;
     }
 
+    /**
+     * Magic method to render Tag
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->render();
@@ -249,7 +254,7 @@ class Tag implements TagInterface
     /**
      * Define text content
      *
-     * @param string $value
+     * @param  string $value
      *
      * @return Tag
      */
@@ -286,14 +291,14 @@ class Tag implements TagInterface
     /**
      * Add element at an existing Markup
      *
-     * @param Tag|string $tag
-     * @param array      $attributes
+     * @param  Tag|string $tag
+     * @param  array      $attributes
      *
      * @return Tag
      */
     public function addElement($tag, array $attributes = [])
     {
-        if ($this->isTagObject($tag)) {
+        if ($tag instanceof self) {
             $htmlTag      = $tag;
             $htmlTag->top = $this->top;
             $htmlTag->attrs($attributes);
@@ -423,6 +428,8 @@ class Tag implements TagInterface
     }
 
     /**
+     * Remove an element
+     *
      * @param $tag
      *
      * @return Tag|null
@@ -496,21 +503,9 @@ class Tag implements TagInterface
     }
 
     /**
-     * Check if it's a tag object
-     *
-     * @param mixed $tag
-     *
-     * @return bool
-     */
-    private function isTagObject($tag)
-    {
-        return $tag instanceof self;
-    }
-
-    /**
      * Check Type
      *
-     * @param string $type
+     * @param  string $type
      *
      * @throws InvalidTypeException
      */
