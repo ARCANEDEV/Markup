@@ -57,7 +57,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     private function registerServices()
     {
-        $this->app->singleton('arcanedev.markup', function($app) {
+        $this->app->singleton('arcanedev.markup', function() {
             return new Markup;
         });
     }
