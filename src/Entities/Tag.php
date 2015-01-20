@@ -190,7 +190,7 @@ class Tag implements TagInterface
     /**
      * Set Parent
      *
-     * @param Tag $parent
+     * @param Tag|null $parent
      *
      * @return Tag
      */
