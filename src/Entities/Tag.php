@@ -381,21 +381,13 @@ class Tag implements TagInterface
             return null;
         }
 
-        $prev = null;
-        $find = false;
-
         foreach ($this->parent->elements as $elt) {
-            if ($elt == $this) {
-                $find = true;
-                break;
-            }
+            if ($elt === $this) { break; }
 
-            if (! $find) {
-                $prev = $elt;
-            }
+            return $elt;
         }
 
-        return $prev;
+        return null;
     }
 
     /**
@@ -425,13 +417,16 @@ class Tag implements TagInterface
      */
     public function remove()
     {
-        if ($this->hasParent()) {
-            return $this->parent->removeElement($this);
-        }
-
-        return null;
+        return $this->hasParent()
+            ? $this->parent->removeElement($this)
+            : null;
     }
 
+    /**
+     * @param $tag
+     *
+     * @return Tag|null
+     */
     public function removeElement($tag)
     {
         $deleted = null;
@@ -473,7 +468,8 @@ class Tag implements TagInterface
      */
     public function hasAttributes()
     {
-        return ! empty($this->attributes) and ! $this->attributes->isEmpty();
+        return ! empty($this->attributes) and
+               ! $this->attributes->isEmpty();
     }
 
     /**
