@@ -113,7 +113,7 @@ class Attribute implements AttributeInterface
      */
     private function setValues($values)
     {
-        $this->checkContent($values);
+        $values = $this->checkContent($values);
 
         if ($this->isSingleValued()) {
             return $this->addValue($values[0], true);
@@ -283,8 +283,10 @@ class Attribute implements AttributeInterface
      * @param string|array $content
      *
      * @throws InvalidTypeException
+     *
+     * @return array
      */
-    private function checkContent(&$content)
+    private function checkContent($content)
     {
         if (! is_array($content) and ! is_string($content)) {
             throw new InvalidTypeException(
@@ -296,7 +298,7 @@ class Attribute implements AttributeInterface
             $content = explode(' ', $content);
         }
 
-        $content = is_array($content)
+        return is_array($content)
             ? array_map('trim', $content)
             : [$content];
     }
